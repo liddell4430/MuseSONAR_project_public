@@ -1,0 +1,454 @@
+/* static/style.css */
+
+
+
+
+.user-idea-display {
+    background-color: #f9f9f9; /* 약간 다른 배경색 */
+    padding: 15px;
+    margin-bottom: 20px; /* 다른 섹션과의 간격 */
+    border-left: 5px solid #007bff; /* 왼쪽에 강조선 */
+    border-radius: 4px; /* 약간 둥근 모서리 */
+}
+
+.user-idea-display h2 {
+    margin-top: 0; /* 제목 위쪽 여백 제거 */
+    margin-bottom: 10px;
+    font-size: 1.3em; /* 제목 크기 조정 */
+    color: #333;
+    text-align: center;
+}
+
+
+/* 애니메이션 적용될 요소의 기본 상태 */
+.reveal-item {
+    opacity: 0;
+    transform: translateY(20px); /* 살짝 아래에서 위로 올라오는 효과 */
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* 부드러운 전환 */
+    /* transition-delay: 0.1s; */ /* 기본 딜레이 (JavaScript에서 덮어씀) */
+}
+
+/* 요소가 보여질 때의 상태 */
+.reveal-item.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 좀 더 현대적인 폰트로 변경 */
+    margin: 0; /* body 여백 제거 */
+    padding: 0;
+    background-color: #f4f7f9; /* 배경색 변경 */
+    color: #333; /* 기본 글자색 */
+    line-height: 1.7; /* 줄 간격 조정 */
+}
+
+.container {
+    max-width: 800px;
+    margin: 2em auto; /* 상하 여백 추가, 중앙 정렬 */
+    background-color: #ffffff; /* 흰색 배경 */
+    padding: 2em;
+    border-radius: 10px; /* 모서리 둥글게 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* 그림자 효과 */
+}
+
+h1, h2 {
+    color: #2c3e50; /* 제목 색상 변경 */
+    border-bottom: 2px solid #e0e0e0; /* 구분선 스타일 변경 */
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+}
+
+h1 {
+    text-align: center; /* 메인 제목 중앙 정렬 */
+    border-bottom: none; /* 메인 제목 구분선 제거 */
+    margin-bottom: 1.5em;
+}
+
+.result-summary {
+    background-color: #eaf5ff; /* 연한 파란색 배경 */
+    padding: 1.5em;
+    border-left: 6px solid #3498db; /* 파란색 강조선 */
+    margin-bottom: 2em;
+    border-radius: 5px;
+}
+
+.result-summary h2 {
+    border: none;
+    margin-top: 0; /* 제목 위 여백 제거 */
+    margin-bottom: 0.8em;
+    font-size: 1.4em; /* 제목 크기 조정 */
+    color: #2980b9; /* 제목 색상 */
+}
+
+/* 점수 표시 영역 - 차트로 대체될 예정 */
+.score-display {
+    text-align: center; /* 점수 관련 내용 중앙 정렬 */
+    margin-bottom: 1em;
+}
+
+
+.score-text-display {
+    text-align: center; /* 텍스트 가운데 정렬 */
+    margin-top: 20px; /* 차트와의 상단 간격 */
+    margin-bottom: 20px; /* 아래 요소와의 간격 */
+}
+
+
+.score-value {
+    font-size: 3.5em; /* 점수 숫자 글자 크기 */
+    font-weight: bold; /* 굵게 */
+}
+
+/* 점수 게이지 차트가 들어갈 영역 스타일 */
+#scoreGaugeChart {
+    max-width: 250px; /* 차트 최대 너비 */
+    margin: 1em auto; /* 위아래 여백 및 중앙 정렬 */
+}
+
+.interpretation {
+    white-space: pre-wrap; /* 줄바꿈 유지 */
+    margin-top: 1em;
+    background-color: #fdfdfe; /* 약간 다른 배경색 */
+    padding: 1em;
+    border-radius: 4px;
+    border: 1px solid #ecf0f1;
+}
+
+.warning {
+    color: #c0392b; /* 빨간색 계열 */
+    background-color: #fdecea; /* 연한 빨간색 배경 */
+    padding: 1em;
+    border-left: 6px solid #e74c3c; /* 빨간색 강조선 */
+    margin-top: 1.5em;
+    white-space: pre-wrap;
+    border-radius: 5px;
+    font-weight: 500; /* 약간 굵게 */
+}
+
+.metrics, .similar-results {
+    margin-top: 2.5em;
+}
+
+.metrics ul, .similar-results ul {
+    list-style: none;
+    padding: 0;
+}
+
+.metrics li, .similar-results li {
+    background-color: #f8f9fa; /* 목록 항목 배경색 */
+    border: 1px solid #e9ecef; /* 테두리 색 변경 */
+    padding: 1.2em;
+    margin-bottom: 1em;
+    border-radius: 6px; /* 모서리 둥글게 */
+    transition: box-shadow 0.2s ease-in-out; /* 호버 효과 */
+}
+
+.metrics li:hover, .similar-results li:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.metrics strong {
+    display: inline-block;
+    min-width: 200px; /* 너비 조정 */
+    color: #555; /* 색상 변경 */
+    margin-right: 0.5em;
+}
+
+.similar-results .rank {
+    font-weight: bold;
+    font-size: 1.3em; /* 크기 조정 */
+    color: #3498db; /* 파란색 */
+    margin-right: 0.7em;
+}
+
+.similar-results .source {
+    font-size: 0.85em;
+    color: #7f8c8d; /* 회색 계열 */
+    background-color: #ecf0f1; /* 연한 회색 배경 */
+    padding: 0.3em 0.6em;
+    border-radius: 4px;
+    display: inline-block;
+    margin-left: 0.5em;
+    font-weight: 500;
+}
+
+.similar-results .content {
+    margin-top: 0.7em;
+    color: #34495e; /* 글자 색상 */
+}
+
+.similar-results .link a {
+    color: #2980b9; /* 링크 색상 */
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.similar-results .link a:hover {
+    color: #1abc9c; /* 호버 시 색상 변경 */
+    text-decoration: underline;
+}
+
+.llm-verification {
+    margin-top: 1em;
+    padding-top: 1em;
+    border-top: 1px dashed #bdc3c7; /* 구분선 스타일 변경 */
+    font-size: 0.9em; /* 크기 조정 */
+    color: #555;
+}
+
+.llm-verification .status {
+    font-weight: bold;
+}
+
+.llm-verification .reason {
+    margin-left: 1.5em; /* 들여쓰기 조정 */
+    color: #777;
+    white-space: pre-wrap;
+    font-style: italic; /* 이유 약간 기울임 */
+    margin-top: 0.3em;
+    display: block; /* 블록 요소로 만들어 줄바꿈 */
+}
+
+.llm-verification .icon {
+    margin-right: 0.4em;
+    font-size: 1.1em; /* 아이콘 크기 조정 */
+}
+
+.error-message {
+    color: #e74c3c; /* 빨간색 */
+    font-weight: bold;
+    background-color: #fdecea; /* 연한 빨간색 배경 */
+    padding: 1.5em;
+    border: 1px solid #f5b7b1;
+    border-radius: 8px;
+    white-space: pre-wrap;
+    margin-bottom: 2em;
+}
+.error-message h2 {
+    color: #c0392b;
+    border: none;
+    margin-top: 0;
+}
+
+a.back-link {
+    display: block; /* 블록 요소로 변경 */
+    width: fit-content; /* 내용물 크기에 맞게 */
+    margin: 2.5em auto 0 auto; /* 상단 여백 및 중앙 정렬 */
+    padding: 0.8em 1.8em; /* 패딩 조정 */
+    background-color: #3498db; /* 버튼 색상 */
+    color: white;
+    text-decoration: none;
+    border-radius: 25px; /* 둥근 버튼 */
+    font-weight: 500;
+    text-align: center;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease; /* 부드러운 전환 효과 */
+}
+
+a.back-link:hover {
+    background-color: #2980b9; /* 호버 시 색상 변경 */
+    transform: translateY(-1px); /* 약간 위로 이동 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+a.back-link:active {
+    transform: translateY(0px); /* 클릭 시 원래 위치로 */
+}
+
+/* ============================== */
+/* 로딩 애니메이션 관련 스타일 (index.html) */
+/* ============================== */
+
+/* 로딩 전체 컨테이너 */
+#loadingContainer {
+    display: none; /* 초기에는 숨김 */
+    margin-top: 1.5em;
+    text-align: center; /* 내용물 중앙 정렬 */
+    padding: 1em;
+    background-color: #f8f9fa; /* 배경색 */
+    border: 1px solid #e9ecef; /* 테두리 */
+    border-radius: 8px;      /* 모서리 둥글게 */
+    overflow: hidden; /* 내부 요소 전환 시 깔끔하게 보이도록 추가 */
+}
+
+/* 로봇 이미지를 감싸는 부모 컨테이너 (전구 위치 기준점 역할) */
+#loadingImageContainer {
+    position: relative; /* 자식 요소(전구)의 absolute 위치 기준 */
+    display: inline-block; /* 다른 요소와 어울리도록 (또는 block) */
+    width: 200px;  /* HTML에서 설정한 크기와 일치시키거나 원하는 크기로 */
+    height: 200px; /* HTML에서 설정한 크기와 일치시키거나 원하는 크기로 */
+    vertical-align: middle; /* P 태그와 세로 정렬 맞추기 (선택 사항) */
+}
+
+/* 전구 이미지 기본 스타일 */
+#loadingBulbImage {
+    position: absolute; /* 부모(#loadingImageContainer) 기준으로 위치 지정 */
+    top: -35px;       /* 위에서 5px 떨어짐 (값 조절 가능) */
+    right: -35px;      /* 오른쪽에서 5px 떨어짐 (값 조절 가능) */
+    width: 120px;     /* 전구 이미지 크기 (값 조절 가능) */
+    height: auto;    /* 높이는 비율에 맞게 자동 조절 */
+    display: none;   /* 초기에는 완전히 숨김 (JS가 block으로 변경) */
+    opacity: 0;      /* 초기에는 투명 (JS가 .hidden 클래스 제거) */
+    transition: opacity 0.3s ease-in-out; /* 투명도 변경 시 페이드 효과 */
+}
+
+/* 로딩 이미지 */
+#loadingImage {
+    width: 100px; /* 이미지 너비 (원하는 크기로 조절) */
+    height: auto; /* 높이는 비율에 맞게 자동 조절 */
+    margin-bottom: 1em; /* 이미지 아래 여백 */
+    opacity: 1; /* 기본 상태는 보이게 */
+    transition: opacity 0.3s ease-in-out; /* 투명도 변경 시 0.3초 애니메이션 */
+}
+
+/* 로딩 텍스트 */
+#loadingText {
+    font-weight: bold;
+    color: #34495e; /* 텍스트 색상 */
+    min-height: 1.5em; /* 텍스트 변경 시 높이가 갑자기 변하는 것 방지 */
+    opacity: 1; /* 기본 상태는 보이게 */
+    transition: opacity 0.3s ease-in-out; /* 투명도 변경 시 0.3초 애니메이션 */
+}
+
+
+#loadingRobotImage.hidden {
+    opacity: 0;
+}
+
+  /* 전구 이미지 숨길 때 (기본적으로 숨겨져 있지만, JS 제어를 위해 규칙 추가) */
+#loadingBulbImage.hidden {
+    /* opacity: 0; */
+}
+
+  /* 로딩 텍스트 숨길 때 */
+#loadingText.hidden {
+    opacity: 0;
+}
+
+.user-idea-display .idea-text-content { 
+    text-align: center ;    /* 가운데 정렬 */
+    font-weight: bold ;     /* 볼드체 */
+    font-size: 1.2em;      /* 글자 크기 키움 (1.1em, 1.3em 등으로 조절 가능) */
+    color: #495057;        /* 기존 색상 유지 */
+    line-height: 1.6;      /* 기존 줄 간격 유지 */
+    margin-bottom: 0;      /* 기존 마진 유지 */
+    white-space: pre-wrap; /* 기존 줄바꿈 유지 */
+}
+
+/* (선택) 아이디어 섹션 제목(<h3>)도 가운데 정렬하려면 아래 코드 추가 */
+.user-idea-display h3 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+    color: #343a40;
+}
+
+/* ============================== */
+/* index.html 페이지 특정 스타일 */
+/* ============================== */
+
+.idea-prompt-message {
+    font-weight: bold;       /* 볼드체 */
+    font-size: 1.2em;        /* 현재보다 큰 포인트 (1.1em, 1.3em 등으로 조절 가능) */
+    text-align: center;      /* 가운데 정렬 */
+    margin-bottom: 1.5em;    /* 입력칸과의 간격 (기존 p 태그 마진과 유사하게 또는 조절) */
+    color: #555;             /* 적절한 글자색 (선택 사항) */
+}
+
+.idea-textarea {
+    width: 100%; /* 가로로 길게 (이미 적용되어 있을 가능성 높음) */
+    height: 40px;            /* 새 높이 설정 (예: 60px, 구글 검색창 느낌으로. 필요시 50px, 70px 등으로 조절) */
+    padding: 0.8em 1em;      /* 내부 여백 (좌우 여백을 조금 더 줄 수 있음) */
+    border: 1px solid #ccc;
+    border-radius: 30px;     /* 구글 검색창처럼 더 둥글게 (선택 사항, 4px 등 기존 값 유지 가능) */
+    font-size: 1.1em;        /* 입력 텍스트 크기 (기존보다 크게, 1.2em 등으로 조절 가능) */
+    font-weight: bold;       /* 입력 텍스트 볼드체 */
+    box-sizing: border-box;
+    margin-bottom: 1.5em;
+    line-height: 1.4;        /* 줄 간격 (여러 줄 입력 시 가독성 위해 조절) */
+    overflow-y: hidden;        /* 내용이 높이보다 많아지면 스크롤바 표시 (height 고정 시 필요) */
+    resize: none;
+}
+
+.idea-textarea:focus {
+    border-color: #007bff; /* 포커스 시 테두리 색상 (기존 스타일 유지 또는 변경) */
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* 기존 스타일 유지 또는 변경 */
+}
+
+/* 분석 시작 버튼 추가 스타일 (기존 back-link 스타일과 병합됨) */
+.analyze-button {
+    display: block; /* 버튼을 블록 요소로 만들기 (가운데 정렬 등에 필요) */
+    /* width: fit-content; */ /* 내용에 맞게 너비 조절, 또는 고정 너비 지정 가능 */
+    margin: 0 auto 1.5em auto; /* 위 0, 좌우 자동(가운데 정렬), 아래 1.5em (로딩 컨테이너와의 간격) */
+    padding: 0.8em 1.8em; /* 내부 여백 (기존 a.back-link 참고) */
+    background-color: #3498db; /* 기본 배경색 (기존 a.back-link 참고) */
+    color: white; /* 글자색 (기존 a.back-link 참고) */
+    border: none; /* 버튼의 기본 테두리 제거 */
+    border-radius: 25px; /* 둥근 모서리 (기존 a.back-link 참고) */
+    font-weight: 500; /* 글꼴 굵기 (기존 a.back-link 참고) */
+    font-size: 1em; /* 버튼 폰트 크기 (기본값, 필요시 조절) */
+    text-align: center; /* 내부 텍스트 가운데 정렬 (기존 a.back-link 참고) */
+    cursor: pointer; /* 마우스 올리면 클릭 가능 아이콘으로 변경 */
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease; /* 부드러운 전환 효과 (기존 a.back-link 참고) */
+}
+
+.analyze-button:hover {
+    background-color: #2980b9; /* 호버 시 배경색 변경 (기존 a.back-link 참고) */
+    transform: translateY(-1px); /* 약간 위로 이동 (기존 a.back-link 참고) */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 그림자 효과 (기존 a.back-link 참고) */
+}
+
+.analyze-button:active {
+    transform: translateY(0px); /* 클릭 시 원래 위치로 (기존 a.back-link 참고) */
+}
+
+
+/* 로딩 애니메이션 이미지들을 감싸는 컨테이너 */
+/* 기존 #loadingImageContainer 스타일이 이미 존재하므로, */
+/* 여기서는 HTML에서 직접 지정했던 스타일 중 CSS로 옮길 것들만 정의하거나 확인합니다. */
+/* .loading-image-wrapper 는 id 선택자 #loadingImageContainer 와 동일한 요소를 가리키므로,
+   기존 #loadingImageContainer 스타일을 우선 확인하고,
+   만약 HTML의 style 속성에만 있던 내용이 있다면 그것만 .loading-image-wrapper 에 추가하거나
+   #loadingImageContainer 에 병합합니다. */
+/* 예시: 만약 HTML에 width, height가 명시적이었다면
+.loading-image-wrapper {
+    width: 200px;
+    height: 200px;
+}
+*/
+/* 현재 style.css 에는 이미 #loadingImageContainer 에 width, height, position 등이 정의되어 있으므로,
+   별도로 .loading-image-wrapper 에 중복으로 정의할 필요는 없어 보입니다.
+   HTML에서 style 속성을 제거한 것만으로도 기존 CSS가 잘 적용될 것입니다. */
+
+
+/* 로딩 로봇 이미지 스타일 */
+.loading-robot {
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 1; /* 기본적으로 보이도록 */
+}
+/* .loading-robot.hidden 클래스는 이미 style.css 하단에 정의되어 있습니다. (#loadingRobotImage.hidden)
+   ID 선택자가 클래스 선택자보다 우선순위가 높으므로, 기존 #loadingRobotImage.hidden 을 사용해도 됩니다.
+   일관성을 위해 클래스 기반으로 바꾸고 싶다면 기존 #loadingRobotImage.hidden 을 .loading-robot.hidden 으로 변경할 수 있습니다.
+   지금은 HTML에서 클래스를 추가했으니, 기존 #loadingRobotImage.hidden 이 잘 동작할 것입니다. */
+
+
+/* 로딩 전구 이미지 스타일 */
+/* 기존 #loadingBulbImage 스타일이 이미 존재합니다.
+   HTML에서 style 속성을 제거했으므로, 해당 CSS가 적용됩니다.
+   class="loading-bulb" 를 추가했으므로, 필요시 .loading-bulb 으로 선택하여 스타일을 덮어쓰거나 추가할 수 있습니다.
+   예를 들어, 만약 HTML의 style 속성에만 있던 특별한 스타일이 있다면 여기에 추가합니다.
+   현재 style.css 의 #loadingBulbImage 와 비교했을 때 HTML 인라인 스타일은
+   position:absolute; display:none; opacity:0; transition:opacity 0.3s ease-in-out; 였습니다.
+   이 내용들은 이미 #loadingBulbImage 에 유사하게 (또는 동일하게) 정의되어 있습니다.
+   따라서 별도 추가는 필요 없어 보입니다.
+*/
+
+/* 추가 확인: #loadingImageContainer, #loadingRobotImage, #loadingBulbImage, #loadingText 에 대한
+   기존 CSS 규칙들이 이미 style.css 에 존재합니다.
+   HTML에서 style 속성을 제거하고 class를 추가함으로써, 이 클래스들을 통해
+   기존 ID 기반 스타일을 보강하거나, 또는 ID 기반 스타일을 클래스 기반으로 점진적으로 옮길 수 있습니다.
+   여기서는 우선 인라인 스타일을 제거하고, 기존 CSS가 최대한 활용되도록 했습니다. */

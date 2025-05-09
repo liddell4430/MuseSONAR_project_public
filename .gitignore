@@ -1,0 +1,25 @@
+# 환경 변수 파일
+.env
+
+# Python 가상 환경
+.venv/
+venv/
+env/
+
+# 캐시 디렉토리
+cache_dir/
+
+# Python 컴파일/캐시 파일
+__pycache__/
+*.pyc
+*.pyo
+
+# VS Code 설정 폴더 (선택 사항)
+.vscode/
+
+# 기타 운영체제/IDE 파일 (선택 사항)
+.DS_Store
+Thumbs.db
+*.log
+MuseSONAR_analysis.log
+

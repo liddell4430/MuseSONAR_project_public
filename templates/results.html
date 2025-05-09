@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>MuseSonar - 분석 결과</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+</head>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const revealItems = document.querySelectorAll('.reveal-item');
+    if (revealItems.length === 0) {
+        console.warn('애니메이션 대상(.reveal-item)을 찾을 수 없습니다. results.html에 해당 클래스가 있는지 확인해주세요.');
+        return;
+    }
+      const baseInterval = 1.25; // 약간 더 여유있게 0.3초 간격으로 시작해보겠습니다. 조절 가능합니다.
+    
+    revealItems.forEach((item, idx) => {
+        item.style.transitionDelay = `${idx * baseInterval}s`;
+        item.classList.add('is-visible');
+        // console.log(`${idx * baseInterval}s 딜레이로 ${item.tagName}#${item.id || item.className.split(' ')[0]} 요소에 is-visible 추가`); // 디버깅용 로그
+    });
+    });
+    </script>
+<body>
+    <div class="container">
+        <h1>MuseSonar 분석 결과</h1>
+
+        {% if user_idea %}
+        <div class="user-idea-display reveal-item">
+            <h2>💡 사용자 입력 아이디어 텍스트</h2>
+            <p class="idea-text-content">{{ user_idea }}</p>
+        </div>
+        {% endif %}
+
+        {# 1. 오류 메시지 #}
+        {% if result.error %}
+            <div class="error-message reveal-item">
+                <h2>오류 발생</h2>
+                <p>{{ result.error }}</p>
+            </div>
+        {% else %}
+            {# 2. 결과 요약 #}
+            <div class="result-summary reveal-item">
+                <h2>📊 아이디어 고유성 평가: {{ result.rating or '평가 불가' }}</h2>
+                {% if result.score is not none %}
+                    <div class="score-display">
+                        <div id="scoreGaugeChart">
+                            <canvas id="gaugeChart"></canvas>
+                        </div>
+                        <div class="score-text-display">
+                            <span class="score-value" id="scoreTextValue">{{ result.score }}</span>
+                        </div>
+                    </div>
+                {% else %}
+                    <p>⭐ 고유성 : 계산 불가 또는 정보 부족</p>
+                {% endif %}
+                {% if interpretation_html %} {# app.py에서 변환된 HTML이 전달되었으면 #}
+                <div class="interpretation"> {# 기존 <p> 태그 대신 <div>로 감싸거나, <p> 태그를 유지해도 됩니다. Markdown이 <p>를 생성할 수 있기 때문입니다. #}
+                    {{ interpretation_html | safe }} {# <--- | safe 필터 사용! #}
+                </div>
+                {% elif result.interpretation %} {# 변환된 HTML은 없지만, 원본 텍스트라도 있으면 (예: Markdown 변환 실패 또는 LLM이 Markdown을 사용하지 않은 경우) #}
+                <p class="interpretation">{{ result.interpretation }}</p> {# 기존 방식대로 표시 #}
+                {% endif %}
+                {% if warning_html %} {# app.py에서 변환된 HTML이 전달되었으면 #}
+                <div class="warning">
+                    {{ warning_html | safe }} {# <--- | safe 필터 사용! #}
+                </div>
+                {% elif result.warning %} {# 변환된 HTML은 없지만, 원본 텍스트라도 있으면 #}
+                <div class="warning">{{ result.warning }}</div> {# 기존 방식대로 표시 #}
+                {% endif %}
+            </div>
+
+            {# 3. 평가 근거 #}
+            {% if result.metrics %}
+            <div class="metrics reveal-item">
+                <h2>🔍 평가 근거 상세</h2>
+                <ul>
+                    {% if result.metrics.combined_results_found %}
+                        <li class="reveal-item">
+                            <strong>웹/특허 개념 밀도 (평균 유사도):</strong>
+                            {% if result.metrics.concept_density_percentage is not none %}
+                                {{ "%.2f"|format(result.metrics.concept_density_percentage) }}%
+                                (관련성 높은 {{ result.metrics.relevant_search_results_count }}개 결과 기준)
+                            {% else %}
+                                관련성 높은 정보 없음
+                            {% endif %}
+                        </li>
+                        <li class="reveal-item">
+                            <strong>구체적 구현 증거 (발견율):</strong>
+                            {% if result.metrics.verification_attempts > 0 and result.metrics.evidence_discovery_rate_percentage is not none %}
+                                {{ "%.1f"|format(result.metrics.evidence_discovery_rate_percentage) }}%
+                                ({{ result.metrics.evidence_count }}개 / {{ result.metrics.verification_attempts }}개 검증)
+                            {% elif result.metrics.relevant_search_results_count > 0 %}
+                                검증 대상 결과 없음 (유사도 < {{ "%.0f"|format(result.metrics.verification_threshold_percentage) }}%)
+                            {% else %}
+                                해당 사항 없음
+                            {% endif %}
+                        </li>
+                    {% else %}
+                        <li class="reveal-item">웹/특허 검색 결과: 아이디어 관련 정보를 찾을 수 없거나 분석 불가.</li>
+                    {% endif %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {# 4. 유사 결과 목록 #}
+            {% if result.top_similar_results %}
+            <div class="similar-results reveal-item">
+                <h2>📋 참고: 가장 유사한 웹/특허 정보 (상위 {{ result.top_similar_results|length }}개)</h2>
+                <ul>
+                    {% for item in result.top_similar_results %}
+                    <li class="reveal-item">
+                        <div>
+                            <span class="rank">#{{ item.rank }}</span>
+                            <strong>유사도: {{ "%.2f"|format(item.similarity_percentage) }}%</strong>
+                            <span class="source">{{ item.source }}</span>
+                        </div>
+                        <div class="content">내용: {{ item.content_preview }}</div>
+                        {% if item.link %}
+                            <div class="link"><a href="{{ item.link }}" target="_blank">출처 링크</a></div>
+                        {% endif %}
+                        {% if item.llm_verification %}
+                            <div class="llm-verification">
+                                LLM 분석:
+                                {% set status = item.llm_verification.status %}
+                                {% set reason = item.llm_verification.reason %}
+                                <span class="status">
+                                    {% if status == 'Yes' %}<span class="icon">✅</span> 유사 구현 가능성 높음
+                                    {% elif status == 'No' %}<span class="icon">❌</span> 구체적 구현 증거 미확인
+                                    {% elif status == 'Unclear' %}<span class="icon">❓</span> 판단 불분명
+                                    {% elif status == 'Error' %}<span class="icon">⚠️</span> 분석 오류
+                                    {% elif status == 'Skipped' %}<span class="icon">⏭️</span> 분석 건너뜀
+                                    {% else %}{{ status }}
+                                    {% endif %}
+                                </span>
+                                {% if reason and status != 'Skipped' %}
+                                    <div class="reason">ㄴ 판단 근거: {{ reason }}</div>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="llm-verification">LLM 분석: 수행되지 않음</div>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% else %}
+                <p class="reveal-item">표시할 유사 결과가 없습니다.</p>
+            {% endif %}
+        {% endif %} {# End of if not result.error #}
+
+        <a href="{{ url_for('index') }}" class="back-link reveal-item">다른 아이디어 분석하기</a>
+    </div>
+
+    <script>
+        // result.score 값이 없거나 숫자가 아닐 경우를 대비하여 기본값 0으로 처리
+        // (기존 코드의 const score 변수와 동일한 역할)
+        const scoreValue = {{ result.score if result.score is not none and result.score is number else 0 }};
+    
+        // HTML에서 id="scoreTextValue"로 지정한 점수 텍스트 요소를 가져옵니다.
+        const scoreTextElement = document.getElementById('scoreTextValue');
+    
+        // 점수 구간에 따른 색상을 반환하는 함수 (기존 함수와 동일)
+        function getScoreColor(value) {
+            if (value >= 85) return '#2ecc71'; // 초록색 계열
+            if (value >= 70) return '#f1c40f'; // 노란색 계열
+            if (value >= 40) return '#e67e22'; // 주황색 계열
+            return '#e74c3c';          // 빨간색 계열
+        }
+    
+        // 현재 점수에 해당하는 색상 계산 (기존 코드와 동일)
+        const scoreColorForChartAndText = getScoreColor(scoreValue); // 변수명 명확화
+    
+        // 점수 텍스트 요소가 존재하고, scoreValue가 유효할 때 (0점 포함) 색상 변경
+        if (scoreTextElement && scoreValue >= 0) {
+            scoreTextElement.style.color = scoreColorForChartAndText;
+        }
+    
+        // 차트 로직은 scoreValue가 0보다 클 때만 실행 (기존 코드와 동일)
+        if (scoreValue > 0) {
+            const ctx = document.getElementById('gaugeChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [scoreValue, 100 - scoreValue],
+                        backgroundColor: [scoreColorForChartAndText, '#ecf0f1'], // 차트 색상 적용
+                        borderColor: '#ffffff',
+                        borderWidth: 2,
+                        circumference: 180,
+                        rotation: 270
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 2,
+                    cutout: '70%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { enabled: false },
+                        datalabels: {
+                            display: false, // 데이터 레이블은 중앙에 표시 안 함 (기존과 동일)
+                            /* 기존 datalabels 설정은 유지해도 되고, 필요 없다면 아래처럼 간단히 display:false만 남겨도 됩니다.
+                            formatter: (value, context) => {
+                                    return null;
+                            },
+                            color: scoreColorForChartAndText, // 이 부분은 이제 차트 중앙이 아니므로 불필요
+                            font: { size: '24', weight: 'bold' },
+                            align: 'center',
+                            anchor: 'center'
+                            */
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels] // ChartDataLabels 플러그인 등록
+            });
+        } else if (scoreTextElement) {
+            // 점수가 0이거나 유효하지 않아 차트를 그리지 않을 때,
+            // scoreTextElement의 색상은 이미 위에서 scoreColorForChartAndText에 따라 설정되었습니다.
+            // (0점일 경우 getScoreColor(0)에 의해 빨간색(#e74c3c)이 됩니다.)
+            // 만약 0점일 때 다른 특정 색(예: 검정)을 원한다면 여기서 다시 설정할 수 있습니다.
+            // 예: if (scoreValue === 0) scoreTextElement.style.color = '#333333';
+        }
+    </script>
+</body>
+</html>

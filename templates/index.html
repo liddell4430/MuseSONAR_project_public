@@ -1,0 +1,29 @@
+
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>MuseSonar - 아이디어 분석</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>MuseSonar 아이디어 분석</h1>
+        <p class="idea-prompt-message">분석하고 싶은 아이디어를 입력해주세요.</p>
+
+        <form id="ideaForm" action="/analyze" method="post">
+            <textarea name="idea_text" class="idea-textarea" placeholder="여기에 아이디어를 자세히 입력하세요..." required></textarea>
+            <button id="analyzeButton" type="submit" class="analyze-button">분석 시작</button>
+        </form>
+        <div id="loadingContainer">
+            <div id="loadingImageContainer" class="loading-image-wrapper">
+                <img id="loadingRobotImage" src="{{ url_for('static', filename='thinking.png') }}" alt="로딩 중 로봇" class="loading-robot">
+                {# src 경로를 url_for를 사용하도록 변경 #}
+                <img id="loadingBulbImage" src="{{ url_for('static', filename='bulb.png') }}" alt="전구 이미지" class="loading-bulb">
+            </div>
+            <p id="loadingText">잠시만 기다려 주세요...</p>
+    </div>
+    <script src="{{ url_for('static', filename='js/loading.js') }}"></script>
+</body>
+</html>
