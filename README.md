@@ -1,6 +1,6 @@
 # MuseSONAR (prototype_public)
 
-> **아이디어의 고유성 측정**
+> **AI 기반 아이디어 고유성 측정 및 평가**
 
 MuseSONAR는 창업 아이디어나 기획안을 입력하면,
 SBERT 기반 유사도 분석과 AI(LLM)의 개념 검증을 통해 **해당 아이디어의 고유성을 평가**해주는 웹 서비스입니다.
@@ -18,11 +18,14 @@ SBERT 기반 유사도 분석과 AI(LLM)의 개념 검증을 통해 **해당 아
 
 > 💡 실제 유사도 판단 알고리즘과 LLM 평가 로직은 비공개 처리되어 있습니다.
 
----
+## 📸 서비스 시연 이미지
 
-
-
----
+![입력화면](static/1.PNG)
+![로딩중](static/2.PNG)
+![결과화면1](static/3.PNG)
+![결과화면2](static/4.PNG)
+![결과화면3](static/5.PNG)
+![결과화면4](static/6.PNG)
 
 ## 📁 디렉토리 구조 (요약)
 ```
@@ -32,9 +35,8 @@ SBERT 기반 유사도 분석과 AI(LLM)의 개념 검증을 통해 **해당 아
 ├── MuseSONAR_stub.py         # 🔒 핵심 분석 로직 대체 스텁
 ├── static/                   # JS, CSS, 이미지
 ├── templates/                # index.html, results.html
-├── requirements.txt          # 의존 패키지 목록
-├── pydantic_models.py        # 입력/출력 구조 정의
-└── .gitignore
+├── requirements.txt          # 의존 패키지 목록      
+└── pydantic_models.py        # 입력/출력 구조 정의
 ```
 
 ---
