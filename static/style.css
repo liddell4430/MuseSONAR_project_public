@@ -430,25 +430,3 @@ a.back-link:active {
     transition: opacity 0.3s ease-in-out;
     opacity: 1; /* 기본적으로 보이도록 */
 }
-/* .loading-robot.hidden 클래스는 이미 style.css 하단에 정의되어 있습니다. (#loadingRobotImage.hidden)
-   ID 선택자가 클래스 선택자보다 우선순위가 높으므로, 기존 #loadingRobotImage.hidden 을 사용해도 됩니다.
-   일관성을 위해 클래스 기반으로 바꾸고 싶다면 기존 #loadingRobotImage.hidden 을 .loading-robot.hidden 으로 변경할 수 있습니다.
-   지금은 HTML에서 클래스를 추가했으니, 기존 #loadingRobotImage.hidden 이 잘 동작할 것입니다. */
-
-
-/* 로딩 전구 이미지 스타일 */
-/* 기존 #loadingBulbImage 스타일이 이미 존재합니다.
-   HTML에서 style 속성을 제거했으므로, 해당 CSS가 적용됩니다.
-   class="loading-bulb" 를 추가했으므로, 필요시 .loading-bulb 으로 선택하여 스타일을 덮어쓰거나 추가할 수 있습니다.
-   예를 들어, 만약 HTML의 style 속성에만 있던 특별한 스타일이 있다면 여기에 추가합니다.
-   현재 style.css 의 #loadingBulbImage 와 비교했을 때 HTML 인라인 스타일은
-   position:absolute; display:none; opacity:0; transition:opacity 0.3s ease-in-out; 였습니다.
-   이 내용들은 이미 #loadingBulbImage 에 유사하게 (또는 동일하게) 정의되어 있습니다.
-   따라서 별도 추가는 필요 없어 보입니다.
-*/
-
-/* 추가 확인: #loadingImageContainer, #loadingRobotImage, #loadingBulbImage, #loadingText 에 대한
-   기존 CSS 규칙들이 이미 style.css 에 존재합니다.
-   HTML에서 style 속성을 제거하고 class를 추가함으로써, 이 클래스들을 통해
-   기존 ID 기반 스타일을 보강하거나, 또는 ID 기반 스타일을 클래스 기반으로 점진적으로 옮길 수 있습니다.
-   여기서는 우선 인라인 스타일을 제거하고, 기존 CSS가 최대한 활용되도록 했습니다. */

@@ -15,12 +15,12 @@
         console.warn('애니메이션 대상(.reveal-item)을 찾을 수 없습니다. results.html에 해당 클래스가 있는지 확인해주세요.');
         return;
     }
-      const baseInterval = 1.25; // 약간 더 여유있게 0.3초 간격으로 시작해보겠습니다. 조절 가능합니다.
+    const baseInterval = 1.25; \
     
     revealItems.forEach((item, idx) => {
         item.style.transitionDelay = `${idx * baseInterval}s`;
         item.classList.add('is-visible');
-        // console.log(`${idx * baseInterval}s 딜레이로 ${item.tagName}#${item.id || item.className.split(' ')[0]} 요소에 is-visible 추가`); // 디버깅용 로그
+        \
     });
     });
     </script>
@@ -57,19 +57,19 @@
                 {% else %}
                     <p>⭐ 고유성 : 계산 불가 또는 정보 부족</p>
                 {% endif %}
-                {% if interpretation_html %} {# app.py에서 변환된 HTML이 전달되었으면 #}
-                <div class="interpretation"> {# 기존 <p> 태그 대신 <div>로 감싸거나, <p> 태그를 유지해도 됩니다. Markdown이 <p>를 생성할 수 있기 때문입니다. #}
-                    {{ interpretation_html | safe }} {# <--- | safe 필터 사용! #}
+                {% if interpretation_html %}
+                <div class="interpretation"> 
+                    {{ interpretation_html | safe }} 
                 </div>
-                {% elif result.interpretation %} {# 변환된 HTML은 없지만, 원본 텍스트라도 있으면 (예: Markdown 변환 실패 또는 LLM이 Markdown을 사용하지 않은 경우) #}
-                <p class="interpretation">{{ result.interpretation }}</p> {# 기존 방식대로 표시 #}
+                {% elif result.interpretation %} 
+                <p class="interpretation">{{ result.interpretation }}</p>
                 {% endif %}
-                {% if warning_html %} {# app.py에서 변환된 HTML이 전달되었으면 #}
+                {% if warning_html %} 
                 <div class="warning">
-                    {{ warning_html | safe }} {# <--- | safe 필터 사용! #}
+                    {{ warning_html | safe }} 
                 </div>
-                {% elif result.warning %} {# 변환된 HTML은 없지만, 원본 텍스트라도 있으면 #}
-                <div class="warning">{{ result.warning }}</div> {# 기존 방식대로 표시 #}
+                {% elif result.warning %} 
+                <div class="warning">{{ result.warning }}</div> 
                 {% endif %}
             </div>
 
@@ -203,17 +203,7 @@
                         legend: { display: false },
                         tooltip: { enabled: false },
                         datalabels: {
-                            display: false, // 데이터 레이블은 중앙에 표시 안 함 (기존과 동일)
-                            /* 기존 datalabels 설정은 유지해도 되고, 필요 없다면 아래처럼 간단히 display:false만 남겨도 됩니다.
-                            formatter: (value, context) => {
-                                    return null;
-                            },
-                            color: scoreColorForChartAndText, // 이 부분은 이제 차트 중앙이 아니므로 불필요
-                            font: { size: '24', weight: 'bold' },
-                            align: 'center',
-                            anchor: 'center'
-                            */
-                        }
+                            display: false, 
                     }
                 },
                 plugins: [ChartDataLabels] // ChartDataLabels 플러그인 등록
